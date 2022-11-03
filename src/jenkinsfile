@@ -1,0 +1,26 @@
+  stage("Build")
+        {
+            steps
+            {
+                script {
+                        echo "INFO: Building Docker Images"
+                        sh "docker build -t java-demo:latest ."
+                        echo "info: docker image built"
+                    }
+            }
+        }
+
+        stage("Deploy")
+        {
+            steps
+            {
+                script {
+                            echo "INFO: Deploy Stage"
+                            sh "docker rm -f java-demo || true"
+                            sh "docker run --restart always -p 3000:3000 -d --name java-demo java-demo:latest"
+                            echo "INFO: deployed"
+                    }
+            }
+        }
+    }
+}
